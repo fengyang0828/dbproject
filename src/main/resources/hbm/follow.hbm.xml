@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- 
+    User object
+-->
+<hibernate-mapping>
+    <class name="com.nyu.dbproject.entity.Follow" table="Follow" lazy = "false">
+        <composite-id>
+            <key-many-to-one name="user" class="com.nyu.dbproject.entity.User">
+                <column name="uid"/>
+            </key-many-to-one>
+
+            <key-many-to-one name="following" class="com.nyu.dbproject.entity.User">
+                <column name="followingid"/>
+            </key-many-to-one>
+        </composite-id>
+
+        <property name="timestamp"></property>
+
+    </class>
+
+    <query name="getFollowByuid">
+        <![CDATA[from Follow f where f.user = :user order by timestamp desc]]>
+    </query>
+
+    <query name="getFollowByfollowid">
+        <![CDATA[from Follow f where f.following = :following]]>
+    </query>
+
+    <query name="checkfollow">
+        <![CDATA[from Follow f where f.user = :user and f.following = :following]]>
+    </query>
+
+
+</hibernate-mapping>

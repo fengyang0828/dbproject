@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- 
+    Album object
+-->
+<hibernate-mapping>
+    <class name="com.nyu.dbproject.entity.Album" table="album" lazy = "false">
+        <id name="alid" column="alid"></id>
+        <property name="altitle"></property>
+        <property name="aldate"></property>
+
+        <many-to-one name="artist" class="com.nyu.dbproject.entity.Artist" fetch="select">
+            <column name="artist_id" not-null="true" />
+        </many-to-one>
+
+        <set name="trackset" table="AlbumTrack" inverse="true" >
+            <key column="alid"></key>
+            <many-to-many column="tid" class="com.nyu.dbproject.entity.Track"></many-to-many>
+        </set>
+
+    </class>    
+
+    <query name="getAlbumByID">
+        <![CDATA[from Album al where al.alid = :alid]]>
+    </query>
+
+    <query name="getAlbumByKeyword">
+        <![CDATA[from Album al where al.altitle like :keyword]]>
+    </query>
+
+    <query name="getAlbumList">
+        <![CDATA[from Album a]]>
+    </query>
+
+    <query name="getAlbumByArtist">
+        <![CDATA[from Album a where a.artist = :artist]]>
+    </query>
+    
+</hibernate-mapping>

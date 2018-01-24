@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- 
+    Playlist object
+-->
+<hibernate-mapping>
+    <class name="com.nyu.dbproject.entity.Playlist" table="playlist" lazy="false">
+        <id name = "pid">
+			<generator class="identity"></generator>
+		</id>
+        <property name="ptitle"></property>
+        <property name="pstatus"></property>
+        <property name="pdate"></property>
+        <many-to-one name="user"
+                     column="uid"
+                     class="com.nyu.dbproject.entity.User"
+                     not-null="true"  
+                     cascade="none" 
+                     lazy="no-proxy"/>
+
+		<set name="trackSet" table="PlaylistTrack" inverse="true" lazy = "false">
+			<key column="pid"></key>
+			<many-to-many column="tid" class="com.nyu.dbproject.entity.Track"></many-to-many>
+		</set>
+                        
+         </class>
+           
+        <query name="getPlaylistByuid">
+		<![CDATA[from Playlist p where p.user=:user order by pdate]]>
+		 </query>
+
+		<query name="getPlaylistByfollowid">
+			<![CDATA[from Playlist p where p.user=:user and pstatus = 0 order by pdate desc ]]>
+		</query>
+
+		<query name="getPlaylistByID">
+		 <![CDATA[from Playlist p where p.pid=:pid]]>
+		 </query>
+		 
+		 <query name="getPlaylistList">
+		  <![CDATA[from Playlist p]]>
+		  </query>
+		  
+		 <query name="getPlaylistByTitle">
+		 <![CDATA[from Playlist p where p.ptitle like :keyword and pstatus = 0]]>
+		 </query>
+</hibernate-mapping>

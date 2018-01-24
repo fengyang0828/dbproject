@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- 
+    User object
+-->
+<hibernate-mapping>
+    <class name="com.nyu.dbproject.entity.User" table="user" lazy = "false">
+        <id name="uid">
+            <generator class="identity"></generator>
+        </id>        
+        <property name="username" unique ="true"></property>
+        <property name="upassword"></property>
+        <property name="uemail"></property>
+        <property name="uname"></property>
+        <property name="ucity"></property>
+    </class>    
+     
+    <query name="user_login">
+    <![CDATA[from User u where u.username = :username and u.upassword =:password]]>
+    </query>
+    
+    <query name="getUserByname">
+        <![CDATA[from User u where u.uname like :name]]>
+    </query>
+    
+    <query name="getUserList">
+        <![CDATA[from User u]]>
+    </query>
+   
+    <query name="getUserByID">
+        <![CDATA[from User u where u.id = :id]]>
+    </query>
+    
+</hibernate-mapping>

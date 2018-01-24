@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- 
+    Track Object
+-->
+<hibernate-mapping>
+    <class name="com.nyu.dbproject.entity.Track" table="Track" lazy="false">
+        <id name = "tid"></id>
+        <property name="ttitle"></property>
+        <property name="tduration"></property>
+        <property name="tgenre"></property>
+        <many-to-one name="artist"
+                     column="aid"
+                     class="com.nyu.dbproject.entity.Artist"
+                     not-null="true"  
+                     cascade="none" 
+                     lazy="no-proxy"/>
+
+		<set name="albumSet" table="AlbumTrack" cascade="all" lazy = "true" >
+			<key column="tid"></key>
+			<many-to-many column="alid" class="com.nyu.dbproject.entity.Album"></many-to-many>
+		</set>
+
+		<set name="playlistsSet" table="PlaylistTrack" cascade="all" lazy = "true" >
+			<key column="tid"></key>
+			<many-to-many column="pid" class="com.nyu.dbproject.entity.Playlist"></many-to-many>
+		</set>
+
+	</class>
+           
+	<query name="getTrackByArtistId">
+		<![CDATA[from Track t where t.artist=:artist]]>
+	</query>
+
+	<query name="getTrackById">
+		 <![CDATA[from Track t where t.tid = :tid]]>
+	</query>
+		 
+	<query name="getTrackList">
+		  <![CDATA[from Track t]]>
+	</query>
+		  
+	<query name="getTrackByTitle">
+		 <![CDATA[from Track t where t.ttitle like :keyword]]>
+	</query>
+
+	<query name="getTrackByGenre">
+		<![CDATA[from Track t where t.tgenre = :genre]]>
+	</query>
+
+
+</hibernate-mapping>
